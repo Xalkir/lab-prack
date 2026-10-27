@@ -1,16 +1,41 @@
-import './App.css'
-const appTitle: string = 'Каталог фильмов и сериалов'
-export default function App() {
- return (
- <main className="app">
- <header>
- <h1>{appTitle}</h1>
- <p>Каталог фильмов и сериалов.</p>
- </header>
- <section aria-labelledby="items-title">
- <h2 id="items-title">Просмотр</h2>
- <p>Здесь появится список ваших фильмов и сериалов.</p>
- </section>
- </main>
- )
+import { Navigate, Route, Routes } from 'react-router'
+import { AppLayout } from './app/AppLayout'
+import { MoviesPage } from './pages/MoviesPage'
+import { MovieDetailsPage } from './pages/MovieDetailsPage'
+import { NewMoviePage } from './pages/NewMoviePage'
+import { NotFoundPage } from './pages/NotFoundPage'
+
+function App() {
+  return (
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route
+          path="/"
+          element={<Navigate to="/movies" replace />}
+        />
+
+        <Route
+          path="/movies"
+          element={<MoviesPage />}
+        />
+
+        <Route
+          path="/movies/new"
+          element={<NewMoviePage />}
+        />
+
+        <Route
+          path="/movies/:id"
+          element={<MovieDetailsPage />}
+        />
+
+        <Route
+          path="*"
+          element={<NotFoundPage />}
+        />
+      </Route>
+    </Routes>
+  )
 }
+
+export default App
