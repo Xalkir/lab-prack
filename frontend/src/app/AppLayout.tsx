@@ -1,12 +1,13 @@
-import { NavLink, Outlet } from 'react-router'
+
+import { Link, NavLink, Outlet } from 'react-router'
 
 export function AppLayout() {
   return (
     <div className="app">
-      <header>
-        <p className="app-title">
+      <header className="app-header">
+        <Link to="/movies" className="app-title">
           Каталог фильмов и сериалов
-        </p>
+        </Link>
 
         <nav aria-label="Основная навигация">
           <NavLink to="/movies" end>
@@ -20,6 +21,9 @@ export function AppLayout() {
       </header>
 
       <main>
+        <p className="storage-notice">
+  Изменения хранятся только до обновления страницы.
+</p>
         <Outlet />
       </main>
     </div>

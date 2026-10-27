@@ -4,3 +4,154 @@
  padding: 32px 20px;
 }
 .app section { margin-top: 32px; }
+
+.movie-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 600px;
+  margin: 24px auto;
+  padding: 28px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.movie-form label {
+  display: block;
+  margin-top: 6px;
+  font-weight: 600;
+  color: #263449;
+}
+
+.movie-form input,
+.movie-form textarea,
+.movie-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font: inherit;
+  background: white;
+}
+
+.movie-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.movie-form input:focus,
+.movie-form textarea:focus,
+.movie-form select:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.movie-form button {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.movie-form button:hover {
+  background: #1d4ed8;
+}
+
+.movie-form button[type="button"] {
+  background: #64748b;
+}
+
+.movie-form button[type="button"]:hover {
+  background: #475569;
+}
+
+.movie-form [role="alert"] {
+  color: #b91c1c;
+  margin: 4px 0;
+}
+
+/* Шапка на всю ширину окна */
+header {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border-radius: 0;
+}
+
+header a {
+  text-decoration: none;
+}
+
+/* Если основной контейнер ограничивает ширину шапки */
+.app-header {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+/* Основной контейнер приложения */
+.app {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Шапка во всю ширину окна */
+.app-header {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  margin: 0;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Название приложения */
+.app-title {
+  color: white;
+  font-size: 26px;
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0;
+}
+
+.app-title:hover {
+  text-decoration: underline;
+}
+
+/* Навигация справа */
+.app-header nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+/* Узкие экраны */
+@media (max-width: 600px) {
+  .app-header {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .app-title {
+    font-size: 21px;
+  }
+}
+.storage-notice {
+  margin: 12px 24px;
+  color: #64748b;
+  font-size: 14px;
+  text-align: center;
+}
