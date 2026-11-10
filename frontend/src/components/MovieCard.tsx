@@ -1,11 +1,20 @@
+
 import { Link } from 'react-router'
 import type { Movie } from '../types/movie'
+import { useTags } from '../hooks/useTags'
 
 type MovieCardProps = {
   movie: Movie
 }
 
 export function MovieCard({ movie }: MovieCardProps) {
+  const { load } = useTags()
+
+  const genreName =
+    load.status === 'success'
+      ? load.data.find((tag) => tag.id === movie.genre)?.name ?? movie.genre
+      : movie.genre
+
   return (
     <article className="movie-card">
       <h2>
@@ -22,7 +31,7 @@ export function MovieCard({ movie }: MovieCardProps) {
       </p>
 
       <p>
-        <strong>Жанр:</strong> {movie.genre}
+        <strong>Жанр:</strong> {genreName}
       </p>
 
       <p>

@@ -1,3 +1,4 @@
+
 import type { Movie } from '../types/movie'
 
 export const movies: Movie[] = [
@@ -7,7 +8,7 @@ export const movies: Movie[] = [
     description:
       'Фантастический фильм о группе исследователей, отправившихся через космический портал на поиски нового дома для человечества.',
     type: 'movie',
-    genre: 'Фантастика',
+    genre: 'fiction',
     year: 2014,
     rating: 8.7,
     country: 'США',
@@ -18,7 +19,7 @@ export const movies: Movie[] = [
     description:
       'История специалиста, который умеет проникать в сны людей и извлекать из них информацию.',
     type: 'movie',
-    genre: 'Фантастика',
+    genre: 'fiction',
     year: 2010,
     rating: 8.8,
     country: 'США',
@@ -29,7 +30,7 @@ export const movies: Movie[] = [
     description:
       'Сериал о подростках, которые сталкиваются с необычными событиями и тайнами небольшого города.',
     type: 'series',
-    genre: 'Фантастика',
+    genre: 'fiction',
     year: 2016,
     rating: 8.6,
     country: 'США',
@@ -40,7 +41,7 @@ export const movies: Movie[] = [
     description:
       'Сериал о современном Шерлоке Холмсе и его расследованиях сложных преступлений.',
     type: 'series',
-    genre: 'Детектив',
+    genre: 'mystery',
     year: 2010,
     rating: 9.1,
     country: 'Великобритания',
@@ -51,7 +52,7 @@ export const movies: Movie[] = [
     description:
       'Драма о дружбе, надежде и стремлении к свободе человека, оказавшегося в тюрьме.',
     type: 'movie',
-    genre: 'Драма',
+    genre: 'drama',
     year: 1994,
     rating: 9.3,
     country: 'США',

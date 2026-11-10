@@ -1,6 +1,7 @@
 
 import { Link, useNavigate, useParams } from 'react-router'
 import type { Movie } from '../types/movie'
+import { useTags } from '../hooks/useTags'
 
 type MovieDetailsPageProps = {
   movies: Movie[]
@@ -13,6 +14,7 @@ export function MovieDetailsPage({
 }: MovieDetailsPageProps) {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { load } = useTags()
 
   const movie = movies.find((item) => item.id === id)
 
@@ -26,36 +28,56 @@ export function MovieDetailsPage({
     )
   }
 
+  const genreName =
+    load.status === 'success'
+      ? load.data.find((tag) => tag.id === movie.genre)?.name ?? movie.genre
+      : movie.genre
+
   function handleDelete() {
-  const currentMovie = movies.find((item) => item.id === id)
+    const currentMovie = movies.find((item) => item.id === id)
 
-  if (!currentMovie) {
-    return
+    if (!currentMovie) {
+      return
+    }
+
+    const confirmed = window.confirm(
+      `Удалить «${currentMovie.title}»? Это действие нельзя отменить.`,
+    )
+
+    if (confirmed) {
+      onDelete(currentMovie.id)
+      navigate('/movies')
+    }
   }
-
-  const confirmed = window.confirm(
-    `Удалить «${currentMovie.title}»? Это действие нельзя отменить.`,
-  )
-
-  if (confirmed) {
-    onDelete(currentMovie.id)
-    navigate('/movies')
-  }
-}
 
   return (
     <section>
       <h1>{movie.title}</h1>
 
-      <p><strong>Описание:</strong> {movie.description}</p>
+      <p>
+        <strong>Описание:</strong> {movie.description}
+      </p>
+
       <p>
         <strong>Тип:</strong>{' '}
         {movie.type === 'movie' ? 'Фильм' : 'Сериал'}
       </p>
-      <p><strong>Жанр:</strong> {movie.genre}</p>
-      <p><strong>Год выпуска:</strong> {movie.year}</p>
-      <p><strong>Рейтинг:</strong> {movie.rating}</p>
-      <p><strong>Страна:</strong> {movie.country}</p>
+
+      <p>
+        <strong>Жанр:</strong> {genreName}
+      </p>
+
+      <p>
+        <strong>Год выпуска:</strong> {movie.year}
+      </p>
+
+      <p>
+        <strong>Рейтинг:</strong> {movie.rating}
+      </p>
+
+      <p>
+        <strong>Страна:</strong> {movie.country}
+      </p>
 
       <div className="movie-actions">
         <Link to={`/movies/${movie.id}/edit`}>

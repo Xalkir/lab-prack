@@ -1,7 +1,11 @@
 [
- { "id": "study", "name": "Учёба" },
- { "id": "work", "name": "Работа" },
- { "id": "home", "name": "Дом" },
- { "id": "health", "name": "Здоровье" },
- { "id": "personal", "name": "Личное" }
+ { "id": "action", "name": "Боевик" },
+ { "id": "comedy", "name": "Комедия" },
+ { "id": "drama", "name": "Драма" },
+ { "id": "horror", "name": "Хоррор" },
+ { "id": "thriller", "name": "Триллер" },
+ { "id": "fiction", "name": "Фантастика" },
+ { "id": "romance", "name": "Мелодрама" },
+ { "id": "fantasy", "name": "Фентези" },
+ { "id": "mystery", "name": "Детектив" }
 ]

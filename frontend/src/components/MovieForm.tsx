@@ -1,6 +1,7 @@
 
 import { useState, type FormEvent } from 'react'
 import type { Movie, MovieType } from '../types/movie'
+import { useTags } from '../hooks/useTags'
 
 type MovieFormProps = {
   initialMovie?: Movie
@@ -16,16 +17,44 @@ export function MovieForm({
   cancelLabel = 'Отмена',
 }: MovieFormProps) {
   const [title, setTitle] = useState(initialMovie?.title ?? '')
-  const [description, setDescription] = useState(initialMovie?.description ?? '')
-  const [type, setType] = useState<MovieType>(initialMovie?.type ?? 'movie')
+  const [description, setDescription] = useState(
+    initialMovie?.description ?? '',
+  )
+  const [type, setType] = useState<MovieType>(
+    initialMovie?.type ?? 'movie',
+  )
   const [genre, setGenre] = useState(initialMovie?.genre ?? '')
-  const [year, setYear] = useState(String(initialMovie?.year ?? ''))
-  const [rating, setRating] = useState(String(initialMovie?.rating ?? ''))
-  const [country, setCountry] = useState(initialMovie?.country ?? '')
+  const [year, setYear] = useState(
+    String(initialMovie?.year ?? ''),
+  )
+  const [rating, setRating] = useState(
+    String(initialMovie?.rating ?? ''),
+  )
+  const [country, setCountry] = useState(
+    initialMovie?.country ?? '',
+  )
   const [error, setError] = useState('')
+
+  const { load, retry } = useTags()
+
+  const tags = load.status === 'success' ? load.data : []
+
+  const selectedTagExists = tags.some(
+    (tag) => tag.id === genre,
+  )
+
+  const canSave =
+    load.status === 'success' && selectedTagExists
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    if (!canSave) {
+      setError(
+        'Дождитесь загрузки жанров и выберите доступный жанр.',
+      )
+      return
+    }
 
     const numericYear = Number(year)
     const numericRating = Number(rating)
@@ -35,8 +64,8 @@ export function MovieForm({
       return
     }
 
-    if (!description.trim() || !genre.trim() || !country.trim()) {
-      setError('Заполни описание, жанр и страну.')
+    if (!description.trim() || !country.trim()) {
+      setError('Заполни описание и страну.')
       return
     }
 
@@ -60,11 +89,13 @@ export function MovieForm({
       return
     }
 
+    setError('')
+
     onSave({
       title: title.trim(),
       description: description.trim(),
       type,
-      genre: genre.trim(),
+      genre,
       year: numericYear,
       rating: numericRating,
       country: country.trim(),
@@ -95,19 +126,70 @@ export function MovieForm({
       <select
         id="movie-type"
         value={type}
-        onChange={(event) => setType(event.target.value as MovieType)}
+        onChange={(event) =>
+          setType(event.target.value as MovieType)
+        }
       >
         <option value="movie">Фильм</option>
         <option value="series">Сериал</option>
       </select>
 
       <label htmlFor="movie-genre">Жанр *</label>
-      <input
+      <select
         id="movie-genre"
         value={genre}
-        onChange={(event) => setGenre(event.target.value)}
         required
-      />
+        disabled={load.status !== 'success' || tags.length === 0}
+        onChange={(event) => setGenre(event.target.value)}
+      >
+        <option value="">Выберите жанр</option>
+
+        {genre !== '' && !selectedTagExists && (
+          <option value={genre} disabled>
+            Текущий жанр: {genre}
+          </option>
+        )}
+
+        {tags.map((tag) => (
+          <option key={tag.id} value={tag.id}>
+            {tag.name}
+          </option>
+        ))}
+      </select>
+
+      {load.status === 'loading' && (
+        <p role="status">Загружаем жанры...</p>
+      )}
+
+      {load.status === 'error' && (
+        <div>
+          <p role="alert">{load.message}</p>
+          <button type="button" onClick={retry}>
+            Повторить загрузку
+          </button>
+        </div>
+      )}
+
+      {load.status === 'success' && tags.length === 0 && (
+        <div>
+          <p role="status">
+            Жанры пока отсутствуют. Сохранение недоступно.
+          </p>
+          <button type="button" onClick={retry}>
+            Повторить загрузку
+          </button>
+        </div>
+      )}
+
+      {load.status === 'success' &&
+        tags.length > 0 &&
+        genre !== '' &&
+        !selectedTagExists && (
+          <p role="alert">
+            Прежний жанр отсутствует в справочнике.
+            Выберите другой жанр.
+          </p>
+        )}
 
       <label htmlFor="movie-year">Год выпуска *</label>
       <input
@@ -120,7 +202,9 @@ export function MovieForm({
         required
       />
 
-      <label htmlFor="movie-rating">Рейтинг от 0 до 10 *</label>
+      <label htmlFor="movie-rating">
+        Рейтинг от 0 до 10 *
+      </label>
       <input
         id="movie-rating"
         type="number"
@@ -142,7 +226,7 @@ export function MovieForm({
 
       {error && <p role="alert">{error}</p>}
 
-      <button type="submit">
+      <button type="submit" disabled={!canSave}>
         {initialMovie ? 'Сохранить изменения' : 'Сохранить'}
       </button>
 
